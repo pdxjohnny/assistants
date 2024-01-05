@@ -29,6 +29,13 @@ It is more of a public utility that we hope will be useful to many people and co
 
 * Rust, Axum, etc.
 
+### Local Development
+
+```console
+$ docker-compose --profile api -f docker/docker-compose.yml build
+$ docker-compose --profile api -f docker/docker-compose.yml up
+```
+
 ### Taking on Tasks
 
 We have a growing task list of
