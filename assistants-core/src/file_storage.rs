@@ -43,8 +43,9 @@ impl FileStorage {
                     warn!("Bucket already exists");
                 } else {
                     panic!(
-                        "Unexpected error when creating bucket: {:?}",
-                        response.status()
+                        "Unexpected error when creating bucket: {:?}: {:?}",
+                        response.status(),
+                        response.text().await
                     );
                 }
             }
