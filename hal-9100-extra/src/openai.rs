@@ -159,6 +159,9 @@ pub async fn call_openai_api(
     let client = reqwest::Client::new();
     let res = client.post(url).headers(headers).json(&body).send().await?;
     let raw_res = res.text().await?;
+
+    println!("raw_res: {:?}", raw_res);
+
     let api_res: Result<ChatCompletion, _> = serde_json::from_str(&raw_res);
 
     match api_res {
@@ -217,6 +220,8 @@ pub async fn call_open_source_openai_api(
     let res = client.post(url).headers(headers).json(&body).send().await?;
     let status = res.status();
     let raw_res = res.text().await?;
+
+    println!("raw_res: {:?}", raw_res);
 
     if !status.is_success() {
         return Err(OpenAIApiError::ApiError(ApiErrorResponse {
@@ -286,6 +291,7 @@ pub async fn call_openai_api_with_messages(
     let client = reqwest::Client::new();
     let res = client.post(url).headers(headers).json(&body).send().await?;
     let raw_res = res.text().await?;
+    println!("raw_res: {:?}", raw_res);
     let api_res: Result<ChatCompletion, _> = serde_json::from_str(&raw_res);
 
     match api_res {
@@ -342,6 +348,8 @@ pub async fn call_open_source_openai_api_with_messages(
     let res = client.post(url).headers(headers).json(&body).send().await?;
     let status = res.status();
     let raw_res = res.text().await?;
+
+    println!("raw_res: {:?}", raw_res);
 
     if !status.is_success() {
         return Err(OpenAIApiError::ApiError(ApiErrorResponse {

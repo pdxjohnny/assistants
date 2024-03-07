@@ -1,3 +1,19 @@
+FROM rust:bullseye as builder
+
+# Set the working directory in the image to /app
+WORKDIR /app
+
+# Copy the current directory contents into the container at /app
+COPY hal-9100-api-communication /app/hal-9100-api-communication
+COPY hal-9100-core /app/hal-9100-core
+COPY hal-9100-extra /app/hal-9100-extra
+COPY Cargo.toml /app/Cargo.toml
+COPY .sqlx /app/.sqlx
+
+ENV SQLX_OFFLINE true
+
+RUN cargo build --release --bin hal-9100
+
 FROM debian:bullseye-slim
 
 # Dependencies 
@@ -17,8 +33,10 @@ WORKDIR /app
 # Define a build argument for the binary path
 ARG BINARY_PATH=./target/release/hal-9100
 
+# Copy the binary from the builder stage
+COPY --from=builder /app/$BINARY_PATH /usr/local/bin/hal-9100
 # Copy the pre-built binaries into the image
-COPY $BINARY_PATH /usr/local/bin/hal-9100
+# COPY $BINARY_PATH /usr/local/bin/hal-9100
 RUN chmod +x /usr/local/bin/hal-9100
 
 # Copy the wait script to the image
